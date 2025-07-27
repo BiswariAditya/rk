@@ -13,8 +13,8 @@ class HeaderWidget {
             logoBytes,
             dpi: 300,
           ),
-          width: 120, // Reduced logo size
-          height: 60,
+          width: 180, // Reduced logo size
+          height: 80,
           fit: pw.BoxFit.fill,
           dpi: 300,
         ),
@@ -27,22 +27,22 @@ class HeaderWidget {
                   crossAxisAlignment: pw.CrossAxisAlignment.start,
                   children: [
                     pw.Text('GST No: 09ANEPG2598L1ZI',
-                        style: pw.TextStyle(fontSize: 8)), // Smaller font
+                        style: pw.TextStyle(fontSize: 10)), // Smaller font
                     pw.Text('Indian Overseas Bank',
-                        style: pw.TextStyle(fontSize: 8)),
+                        style: pw.TextStyle(fontSize: 10)),
                     pw.Text('A/C NO: 056502000001372',
-                        style: pw.TextStyle(fontSize: 8)),
+                        style: pw.TextStyle(fontSize: 10)),
                     pw.Text('IFSC Code: IOBA0000565',
-                        style: pw.TextStyle(fontSize: 8)),
-                    pw.Text('Ph: 9450080432, 0510-2361494',
-                        style: pw.TextStyle(fontSize: 8)),
+                        style: pw.TextStyle(fontSize: 10)),
+                    pw.Text('Ph: +91 9450080432',
+                        style: pw.TextStyle(fontSize: 10)),
                   ],
                 ),
                 pw.SizedBox(width: 5), // Reduced spacing
                 pw.Image(
                   pw.MemoryImage(qrBytes),
-                  width: 50, // Reduced QR code size
-                  height: 50,
+                  width: 60, // Reduced QR code size
+                  height: 60,
                   fit: pw.BoxFit.contain,
                 ),
               ],
