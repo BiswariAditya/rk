@@ -588,7 +588,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               )
             : const Icon(Icons.save_alt, color: Colors.white, size: 24),
         label: Text(
-          _isProcessing ? 'Processing...' : 'Generate & Save Invoice',
+          _isProcessing ? 'Processing...' : 'Generate Invoice',
           style: const TextStyle(fontSize: 16),
         ),
         style: ElevatedButton.styleFrom(
