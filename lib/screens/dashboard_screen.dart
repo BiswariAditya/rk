@@ -52,6 +52,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     super.initState();
     _initializeInvoice();
+    _testFirebaseConnection();
+  }
+
+  Future<void> _testFirebaseConnection() async {
+    final isConnected = await _dbService.testConnection();
+    if (!isConnected) {
+      _showSnackbar(
+        '⚠️ Firebase connection failed. Check your setup.',
+        isSuccess: false,
+      );
+    } else {
+      _showSnackbar(
+        '✅ Firebase connected successfully!',
+        isSuccess: true,
+      );
+    }
   }
 
   @override
@@ -780,10 +796,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
     }
   }
 
-  void _saveCustomerInfo() {
+  void _saveCustomerInfo() async {
     if (_customerFormKey.currentState!.validate()) {
       setState(() => _showCustomerForm = false);
-      _dbService.saveCustomer({
+      await _dbService.saveCustomer({
         'name': _customerNameController.text,
         'address': _customerAddressController.text,
         'gstNumber': _gstNumberController.text,

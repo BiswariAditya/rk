@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+
 class FirebaseService {
   static FirebaseService? _instance;
   static FirebaseService get instance {
@@ -21,19 +23,66 @@ class FirebaseService {
   static const String PURCHASE_BILLS = 'purchase_bills';
   static const String SUPPLIERS = 'suppliers';
 
+  /// Test Firebase connection
+  Future<bool> testConnection() async {
+    try {
+      debugPrint('🔍 Testing Firestore connection...');
+
+      // Try to write a test document
+      await _firestore.collection('_test').add({
+        'timestamp': FieldValue.serverTimestamp(),
+        'test': true,
+      });
+
+      debugPrint('✅ Firestore connection successful!');
+      return true;
+
+    } on FirebaseException catch (e) {
+      debugPrint('❌ Firestore connection failed:');
+      debugPrint('   Code: ${e.code}');
+      debugPrint('   Message: ${e.message}');
+      return false;
+
+    } catch (e) {
+      debugPrint('❌ Unknown error testing connection: $e');
+      return false;
+    }
+  }
+
+
   // ============= INVOICE OPERATIONS =============
 
   /// Save invoice to Firestore
   Future<String?> saveInvoice(Map<String, dynamic> invoiceData) async {
     try {
+      // Add timestamps
       invoiceData['createdAt'] = FieldValue.serverTimestamp();
       invoiceData['updatedAt'] = FieldValue.serverTimestamp();
 
+      // Add lowercase customer name for search
+      if (invoiceData['customerName'] != null) {
+        invoiceData['customerNameLower'] =
+            invoiceData['customerName'].toString().toLowerCase();
+      }
+
+      debugPrint('📝 Attempting to save invoice to Firestore...');
+      debugPrint('Invoice data: ${invoiceData.toString()}');
+
       final docRef = await _firestore.collection(INVOICES).add(invoiceData);
-      print('Invoice saved with ID: ${docRef.id}');
+
+      debugPrint('✅ Invoice saved successfully with ID: ${docRef.id}');
       return docRef.id;
-    } catch (e) {
-      print('Error saving invoice: $e');
+
+    } on FirebaseException catch (e) {
+      debugPrint('❌ Firebase Error saving invoice:');
+      debugPrint('   Code: ${e.code}');
+      debugPrint('   Message: ${e.message}');
+      debugPrint('   Plugin: ${e.plugin}');
+      return null;
+
+    } catch (e, stackTrace) {
+      debugPrint('❌ Unknown Error saving invoice: $e');
+      debugPrint('Stack trace: $stackTrace');
       return null;
     }
   }
