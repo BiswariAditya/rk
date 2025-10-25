@@ -1,7 +1,5 @@
 class PurchaseItem {
   final String description;
-  final double length;
-  final double breadth;
   final int hsnCode;
   final int quantity;
   final double rate;
@@ -9,29 +7,23 @@ class PurchaseItem {
 
   PurchaseItem({
     required this.description,
-    required this.length,
-    required this.breadth,
     required this.hsnCode,
     required this.quantity,
     required this.rate,
     required this.taxRate,
   });
 
-  double get size => length * breadth;
-  double get subtotal => size * quantity * rate;
+  double get subtotal => quantity * rate;
   double get taxAmount => subtotal * (taxRate / 100);
   double get amount => subtotal + taxAmount;
 
   Map<String, dynamic> toMap() {
     return {
       'description': description,
-      'length': length,
-      'breadth': breadth,
       'hsnCode': hsnCode,
       'quantity': quantity,
       'rate': rate,
       'taxRate': taxRate,
-      'size': size,
       'subtotal': subtotal,
       'taxAmount': taxAmount,
       'amount': amount,
@@ -41,8 +33,6 @@ class PurchaseItem {
   factory PurchaseItem.fromMap(Map<String, dynamic> map) {
     return PurchaseItem(
       description: map['description'] ?? '',
-      length: (map['length'] ?? 0).toDouble(),
-      breadth: (map['breadth'] ?? 0).toDouble(),
       hsnCode: map['hsnCode'] ?? 0,
       quantity: map['quantity'] ?? 0,
       rate: (map['rate'] ?? 0).toDouble(),

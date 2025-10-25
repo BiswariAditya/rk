@@ -19,8 +19,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
   // Item form controllers
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _lengthController = TextEditingController();
-  final TextEditingController _breadthController = TextEditingController();
   final TextEditingController _hsnCodeController = TextEditingController();
   final TextEditingController _quantityController = TextEditingController();
   final TextEditingController _rateController = TextEditingController();
@@ -56,8 +54,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
   @override
   void dispose() {
     _descriptionController.dispose();
-    _lengthController.dispose();
-    _breadthController.dispose();
     _hsnCodeController.dispose();
     _quantityController.dispose();
     _rateController.dispose();
@@ -427,32 +423,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
         Expanded(
           flex: 1,
           child: TextFormField(
-            controller: _lengthController,
-            decoration: const InputDecoration(
-              labelText: 'Length (ft)',
-              border: OutlineInputBorder(),
-              hintText: 'e.g. 100',
-            ),
-            keyboardType: TextInputType.number,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          flex: 1,
-          child: TextFormField(
-            controller: _breadthController,
-            decoration: const InputDecoration(
-              labelText: 'Breadth (ft)',
-              border: OutlineInputBorder(),
-              hintText: 'e.g. 5',
-            ),
-            keyboardType: TextInputType.number,
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          flex: 1,
-          child: TextFormField(
             controller: _rateController,
             decoration: const InputDecoration(
               labelText: 'Rate (₹)',
@@ -514,34 +484,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                   labelText: 'Quantity',
                   border: OutlineInputBorder(),
                   hintText: 'e.g. 1',
-                ),
-                keyboardType: TextInputType.number,
-              ),
-            ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        Row(
-          children: [
-            Expanded(
-              child: TextFormField(
-                controller: _lengthController,
-                decoration: const InputDecoration(
-                  labelText: 'Length (ft)',
-                  border: OutlineInputBorder(),
-                  hintText: 'e.g. 100',
-                ),
-                keyboardType: TextInputType.number,
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: TextFormField(
-                controller: _breadthController,
-                decoration: const InputDecoration(
-                  labelText: 'Breadth (ft)',
-                  border: OutlineInputBorder(),
-                  hintText: 'e.g. 5',
                 ),
                 keyboardType: TextInputType.number,
               ),
@@ -661,9 +603,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
                                   Expanded(
                                       flex: 2,
                                       child: Text(item.hsnCode.toString())),
-                                  Expanded(
-                                      flex: 2,
-                                      child: Text("${item.size} sqft")),
                                   Expanded(
                                       flex: 1,
                                       child: Text(item.quantity.toString())),
@@ -800,9 +739,7 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
   void _addItem() {
     if (_formKey.currentState!.validate()) {
-      if (_lengthController.text.isEmpty ||
-          _breadthController.text.isEmpty ||
-          _quantityController.text.isEmpty ||
+      if (_quantityController.text.isEmpty ||
           _rateController.text.isEmpty) {
         _showErrorSnackbar("Please fill all required fields");
         return;
@@ -814,8 +751,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
         purchaseProvider.addItem(
           PurchaseItem(
             description: _descriptionController.text,
-            length: double.tryParse(_lengthController.text) ?? 0,
-            breadth: double.tryParse(_breadthController.text) ?? 0,
             hsnCode: _hsnCodeController.text.isEmpty
                 ? 0
                 : int.tryParse(_hsnCodeController.text) ?? 0,
@@ -827,8 +762,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
         // Clear item form
         _descriptionController.clear();
-        _lengthController.clear();
-        _breadthController.clear();
         _hsnCodeController.clear();
         _quantityController.clear();
         _rateController.clear();
@@ -972,8 +905,6 @@ class _PurchaseScreenState extends State<PurchaseScreen> {
 
   void _clearAllFields() {
     _descriptionController.clear();
-    _lengthController.clear();
-    _breadthController.clear();
     _hsnCodeController.clear();
     _quantityController.clear();
     _rateController.clear();

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:rk_adv/screens/purchase_invoice_tab.dart';
+import 'package:rk_adv/screens/sales_invoice_tab.dart';
+
+import 'analytics_tab.dart';
 
 class InvoicesScreen extends StatefulWidget {
   const InvoicesScreen({super.key});
@@ -7,55 +11,57 @@ class InvoicesScreen extends StatefulWidget {
   State<InvoicesScreen> createState() => _InvoicesScreenState();
 }
 
-class _InvoicesScreenState extends State<InvoicesScreen> {
+class _InvoicesScreenState extends State<InvoicesScreen>
+    with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 3, vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Past Invoices'),
+        centerTitle: true,
+        title: const Text('Invoices & Analytics'),
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
         elevation: 2,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.receipt_long, size: 100, color: Colors.indigo.withOpacity(0.3)),
-            const SizedBox(height: 20),
-            Text(
-              'Invoice History',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-                color: Colors.indigo,
-              ),
-            ),
-            const SizedBox(height: 10),
-            Text(
-              'View and manage your past invoices',
-              style: TextStyle(
-                fontSize: 16,
-                color: Colors.grey[600],
-              ),
-            ),
-            const SizedBox(height: 30),
-            ElevatedButton.icon(
-              icon: const Icon(Icons.add),
-              label: const Text('Feature Coming Soon'),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.indigo,
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-              ),
-              onPressed: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('Invoice history feature will be added soon!')),
-                );
-              },
-            ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: () => setState(() {}),
+            tooltip: 'Refresh',
+          ),
+        ],
+        bottom: TabBar(
+          controller: _tabController,
+          indicatorColor: Colors.white,
+          labelColor: Colors.white,
+          unselectedLabelColor: Colors.white70,
+          tabs: const [
+            Tab(text: 'Sales', icon: Icon(Icons.receipt_long)),
+            Tab(text: 'Purchase', icon: Icon(Icons.shopping_cart)),
+            Tab(text: 'Analytics', icon: Icon(Icons.analytics)),
           ],
         ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          SalesInvoicesTab(),
+          PurchaseInvoicesTab(),
+          AnalyticsTab(),
+        ],
       ),
     );
   }

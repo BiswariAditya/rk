@@ -9,7 +9,6 @@ import 'package:rk_adv/screens/nav_bar.dart';
 void main() async {
   try {
     if (kIsWeb) {
-      // Web-specific initialization
       await Firebase.initializeApp(
         options: const FirebaseOptions(
             apiKey: "AIzaSyB2YZHZwvthIYmp7ryQyFZabSipghaCkhc",

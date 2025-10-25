@@ -23,32 +23,6 @@ class FirebaseService {
   static const String PURCHASE_BILLS = 'purchase_bills';
   static const String SUPPLIERS = 'suppliers';
 
-  /// Test Firebase connection
-  Future<bool> testConnection() async {
-    try {
-      debugPrint('🔍 Testing Firestore connection...');
-
-      // Try to write a test document
-      await _firestore.collection('_test').add({
-        'timestamp': FieldValue.serverTimestamp(),
-        'test': true,
-      });
-
-      debugPrint('✅ Firestore connection successful!');
-      return true;
-
-    } on FirebaseException catch (e) {
-      debugPrint('❌ Firestore connection failed:');
-      debugPrint('   Code: ${e.code}');
-      debugPrint('   Message: ${e.message}');
-      return false;
-
-    } catch (e) {
-      debugPrint('❌ Unknown error testing connection: $e');
-      return false;
-    }
-  }
-
 
   // ============= INVOICE OPERATIONS =============
 

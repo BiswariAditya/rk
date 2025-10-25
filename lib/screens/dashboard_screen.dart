@@ -40,7 +40,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   // State variables
   bool _showCustomerForm = false;
   bool _isProcessing = false;
-  final bool _isSearchingCustomer = false;
   double _selectedTaxRate = 18.0;
   int _invoiceCount = 1;
   String? _selectedCustomerId;
@@ -52,23 +51,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     super.initState();
     _initializeInvoice();
-    _testFirebaseConnection();
+    // _testFirebaseConnection();
   }
 
-  Future<void> _testFirebaseConnection() async {
-    final isConnected = await _dbService.testConnection();
-    if (!isConnected) {
-      _showSnackbar(
-        '⚠️ Firebase connection failed. Check your setup.',
-        isSuccess: false,
-      );
-    } else {
-      _showSnackbar(
-        '✅ Firebase connected successfully!',
-        isSuccess: true,
-      );
-    }
-  }
+  // Future<void> _testFirebaseConnection() async {
+  //   final isConnected = await _dbService.testConnection();
+  //   if (!isConnected) {
+  //     _showSnackbar(
+  //       '⚠️ Firebase connection failed. Check your setup.',
+  //       isSuccess: false,
+  //     );
+  //   } else {
+  //     _showSnackbar(
+  //       '✅ Firebase connected successfully!',
+  //       isSuccess: true,
+  //     );
+  //   }
+  // }
 
   @override
   void dispose() {
@@ -864,27 +863,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
       if (savedId == null) {
         throw 'Failed to save invoice to database';
       }
-
-      _showSnackbar('✓ Step 1/4: Invoice saved to database', isSuccess: true);
-      await Future.delayed(const Duration(milliseconds: 500));
-
       // STEP 2: Save/Update Customer
       await _saveOrUpdateCustomer();
-      _showSnackbar('✓ Step 2/4: Customer information saved', isSuccess: true);
-      await Future.delayed(const Duration(milliseconds: 500));
 
       // STEP 3: Export to CSV
-      try {
-        await saveCsv(
-          items: provider.items,
-          customerName: _customerNameController.text,
-          serialNo: _invoiceNumberController.text,
-          invoiceDate: _invoiceDateController.text,
-        );
-        _showSnackbar('✓ Step 3/4: Data exported to CSV', isSuccess: true);
-      } catch (e) {
-        _showSnackbar('Warning: CSV export failed', isSuccess: false);
-      }
+      // try {
+      //   await saveCsv(
+      //     items: provider.items,
+      //     customerName: _customerNameController.text,
+      //     serialNo: _invoiceNumberController.text,
+      //     invoiceDate: _invoiceDateController.text,
+      //   );
+      // } catch (e) {
+      //   _showSnackbar('Warning: CSV export failed', isSuccess: false);
+      // }
       await Future.delayed(const Duration(milliseconds: 500));
 
       // STEP 4: Generate PDF
@@ -899,14 +891,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
         provider,
       );
 
-      _showSnackbar('✓ Step 4/4: PDF generated successfully!', isSuccess: true);
-
       // Clear all data
       provider.clearInvoice();
+
       _clearAllFields();
 
       // Show success dialog
-      _showSuccessDialog();
+      _showSnackbar('Invoice generated and saved successfully!', isSuccess: true);
     } catch (e) {
       _showSnackbar('Error: $e');
     } finally {
@@ -1161,44 +1152,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  void _showSuccessDialog() {
-    showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Row(
-          children: const [
-            Icon(Icons.check_circle, color: Colors.green, size: 32),
-            SizedBox(width: 12),
-            Text('Success!'),
-          ],
-        ),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text(
-              'Invoice processed successfully:',
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            ),
-            SizedBox(height: 16),
-            _SuccessCheckItem(text: 'Saved to database'),
-            _SuccessCheckItem(text: 'Customer information saved'),
-            _SuccessCheckItem(text: 'Exported to CSV'),
-            _SuccessCheckItem(text: 'PDF generated'),
-          ],
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK', style: TextStyle(fontSize: 16)),
-          ),
-        ],
-      ),
-    );
-  }
-
   void _showSnackbar(String message, {bool isSuccess = false}) {
     if (!mounted) return;
 
@@ -1208,27 +1161,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
         backgroundColor: isSuccess ? Colors.green : Colors.red,
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 2),
-      ),
-    );
-  }
-}
-
-// Helper widget for success dialog
-class _SuccessCheckItem extends StatelessWidget {
-  final String text;
-
-  const _SuccessCheckItem({required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        children: [
-          const Icon(Icons.check_circle_outline, color: Colors.green, size: 20),
-          const SizedBox(width: 8),
-          Text(text),
-        ],
       ),
     );
   }
