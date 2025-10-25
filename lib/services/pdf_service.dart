@@ -16,7 +16,6 @@ Future<void> generatePdfInvoice(
     List<Item> items,
     String customerName,
     String customerAddress,
-    String statCode,
     String gstNo,
     String phNo,
     String serialNo,
@@ -87,7 +86,7 @@ Future<void> generatePdfInvoice(
 
               // Customer details
               CustomerSection.buildCustomerSection(customerName,
-                  customerAddress, statCode, gstNo, phNo, customFont),
+                  customerAddress, gstNo, phNo, customFont),
 
               pw.SizedBox(height: 5),
 

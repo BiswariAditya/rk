@@ -1,8 +1,8 @@
 import 'package:pdf/widgets.dart' as pw;
 
-class CustomerSection{
-  static pw.Widget buildCustomerSection(String customerName, String customerAddress,
-      String statCode, String gstNo, String phNo, pw.Font customFont) {
+class CustomerSection {
+  static pw.Widget buildCustomerSection(String customerName,
+      String customerAddress, String gstNo, String phNo, pw.Font customFont) {
     return pw.Container(
       padding: pw.EdgeInsets.all(5), // Reduced padding
       decoration: pw.BoxDecoration(
@@ -13,16 +13,18 @@ class CustomerSection{
         crossAxisAlignment: pw.CrossAxisAlignment.start,
         children: [
           pw.Text('M/s. $customerName',
-              style: pw.TextStyle(fontSize: 10, fontWeight: pw.FontWeight.bold)),
+              style:
+                  pw.TextStyle(fontSize: 10, fontWeight: pw.FontWeight.bold)),
           pw.SizedBox(height: 2), // Reduced spacing
           pw.Row(
             crossAxisAlignment: pw.CrossAxisAlignment.start,
             children: [
               pw.Text('Address: ',
-                  style:
-                  pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold)),
+                  style: pw.TextStyle(
+                      fontSize: 8, fontWeight: pw.FontWeight.bold)),
               pw.Expanded(
-                child: pw.Text(customerAddress, style: pw.TextStyle(fontSize: 8)),
+                child:
+                    pw.Text(customerAddress, style: pw.TextStyle(fontSize: 8)),
               ),
             ],
           ),
@@ -37,8 +39,6 @@ class CustomerSection{
                     pw.Text('State Code:',
                         style: pw.TextStyle(
                             fontSize: 8, fontWeight: pw.FontWeight.bold)),
-                    pw.SizedBox(width: 2),
-                    pw.Text(statCode, style: pw.TextStyle(fontSize: 8)),
                   ],
                 ),
               ),
