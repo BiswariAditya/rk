@@ -127,7 +127,7 @@ class _NavBarState extends State<NavBar> {
                 },
               ),
               SidebarXItem(
-                icon: Icons.receipt_long,
+                icon: Icons.shopping_cart,
                 label: 'Purchases',
                 onTap: () {
                   setState(() {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rk_adv/services/pdf_service.dart';
 
 class InvoiceDetailScreen extends StatelessWidget {
   final Map<String, dynamic> invoice;
@@ -295,22 +296,22 @@ class InvoiceDetailScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.all(16),
-        child: ElevatedButton.icon(
-          onPressed: () => _printInvoice(context),
-          icon: const Icon(Icons.print, color: Colors.white),
-          label: const Text(
-              'Print / Download PDF', style: TextStyle(fontSize: 16)),
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.indigo,
-            foregroundColor: Colors.white,
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12)),
-          ),
-        ),
-      ),
+      // bottomNavigationBar: Padding(
+      //   padding: const EdgeInsets.all(16),
+      //   child: ElevatedButton.icon(
+      //     onPressed: () => _printInvoice(context),
+      //     icon: const Icon(Icons.print, color: Colors.white),
+      //     label: const Text(
+      //         'Print / Download PDF', style: TextStyle(fontSize: 16)),
+      //     style: ElevatedButton.styleFrom(
+      //       backgroundColor: Colors.indigo,
+      //       foregroundColor: Colors.white,
+      //       padding: const EdgeInsets.symmetric(vertical: 16),
+      //       shape: RoundedRectangleBorder(
+      //           borderRadius: BorderRadius.circular(12)),
+      //     ),
+      //   ),
+      // ),
     );
   }
 
@@ -377,20 +378,6 @@ class InvoiceDetailScreen extends StatelessWidget {
         // You'll need to import your Item model
         return item;
       }).toList() ?? [];
-
-      // Call your PDF service
-      // This is a placeholder - adjust according to your actual PDF service
-      // await generatePdfInvoice(
-      //   items,
-      //   invoice['customerName'] ?? '',
-      //   invoice['customerAddress'] ?? '',
-      //   invoice['gstNumber'] ?? '',
-      //   invoice['phoneNumber'] ?? '',
-      //   invoice['invoiceNumber'] ?? '',
-      //   invoice['invoiceDate'] ?? '',
-      //   provider, // You'll need to pass the provider
-      // );
-
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('✅ PDF generated successfully!'),
